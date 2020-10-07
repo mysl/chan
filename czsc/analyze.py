@@ -807,12 +807,10 @@ class KlineAnalyze:
         if self.verbose:
             print("=" * 100)
             print("输入新K线：{}".format(k))
-        if not self.kline_raw or k['open'] != self.kline_raw[-1]['open']:
+        if not self.kline_raw or k['dt'] > self.kline_raw[-1]['dt']:
             self.kline_raw.append(k)
         else:
-            if self.verbose:
-                print("输入K线处于未完成状态，更新：replace {} with {}".format(self.kline_raw[-1], k))
-            self.kline_raw[-1] = k
+            raise ValueError('new kline dt should be > last dt')
 
         self._update_ta()
         self._update_kline_new()
